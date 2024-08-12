@@ -1,0 +1,19 @@
+[package]
+name = "rs-reconcile"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unsafe-code = "forbid"
+
+[lints.clippy]
+unwrap-used = "forbid"
+
+[dependencies.tonic]
+version = "0.12"
+default-features = false
+features = [
+  "codegen",
+  "prost",
+  "transport",
+]

@@ -1,0 +1,59 @@
+[package]
+name = "fs2fs-json"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unsafe-code = "forbid"
+
+[lints.clippy]
+unwrap-used = "forbid"
+
+[dependencies.rs-reconcile]
+path = "../../.."
+
+[dependencies.serde]
+version = "1.0.206"
+default-features = false
+features = [
+  "derive",
+  "std",
+]
+
+[dependencies.serde_json]
+version = "1.0.124"
+default-features = false
+features = [
+  "std",
+]
+
+[dependencies.futures]
+version = "0.3.30"
+default-features = false
+features = [
+  "async-await",
+  "executor",
+  "std",
+]
+
+[dependencies.tonic]
+version = "0.12.1"
+default-features = false
+features = []
+
+[dependencies.tokio]
+version = "1.39.2"
+default-features = false
+features = [
+  "fs",
+  "rt-multi-thread",
+  "macros",
+  "io-util",
+]
+
+[dependencies.tokio-stream]
+version = "0.1.15"
+default-features = false
+features = [
+  "io-util",
+]
