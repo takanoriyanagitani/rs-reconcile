@@ -7,7 +7,31 @@ use rs_reconcile::count::CountRawParser;
 use rs_reconcile::count::CountSource;
 use rs_reconcile::count::CountSourceRaw;
 
+use rs_reconcile::source::fs::path2raw::path2raw_new_fn;
+use rs_reconcile::source::fs::path2raw::PathToRaw;
+
+use rs_reconcile::source::fs::key2path::key2path_fn_new;
+use rs_reconcile::source::fs::key2path::KeyToPath;
+
+use rs_reconcile::source::fs::key2raw::key2raw_fs_new;
+
 use tonic::Status;
+
+pub fn path2raw_tokio_new() -> impl PathToRaw {
+    path2raw_new_fn(tokio::fs::read)
+}
+
+pub fn key2path_new(root: PathBuf) -> impl KeyToPath<Key = KeyInfo> {
+    key2path_fn_new(move |key: &KeyInfo| {
+        let dev = root.join(&key.uuid36);
+        let ymd = dev.join(&key.ymd10);
+        ymd.join("stat.json")
+    })
+}
+
+pub fn cnt_src_raw_new(root: PathBuf) -> impl CountSourceRaw<Key = KeyInfo> {
+    key2raw_fs_new(key2path_new(root), path2raw_tokio_new())
+}
 
 #[derive(serde::Deserialize)]
 pub struct StatInfo {
@@ -31,27 +55,8 @@ pub fn cnt_raw_parser_stat_info() -> impl CountRawParser {
     })
 }
 
-pub struct CntSrcRaw {
-    root: PathBuf,
-}
-
-#[tonic::async_trait]
-impl CountSourceRaw for CntSrcRaw {
-    type Key = KeyInfo;
-
-    async fn get_count_by_key(&self, key: &Self::Key) -> Result<Vec<u8>, Status> {
-        let dev = self.root.join(&key.uuid36);
-        let ymd = dev.join(&key.ymd10);
-        let stat = ymd.join("stat.json");
-        let raw: Vec<u8> = tokio::fs::read(&stat).await.map_err(|e| {
-            Status::internal(format!("unable to read the stat info file({stat:#?}): {e}"))
-        })?;
-        Ok(raw)
-    }
-}
-
 pub fn cnt_src_stat_info_new(root: PathBuf) -> impl CountSource<Key = KeyInfo> {
     let parser = cnt_raw_parser_stat_info();
-    let raw_source = CntSrcRaw { root };
+    let raw_source = cnt_src_raw_new(root);
     cnt_src_raw_parsed_new(raw_source, parser)
 }
