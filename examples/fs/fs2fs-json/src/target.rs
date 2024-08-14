@@ -7,33 +7,38 @@ use tokio_stream::wrappers::LinesStream;
 
 use rs_reconcile::count::CountSource;
 
-use tonic::Status;
+use rs_reconcile::source::fs::key2path::key2path_fn_new;
+use rs_reconcile::source::fs::key2path::KeyToPath;
+
+use rs_reconcile::target::fs::key2count::cnt_src_key2cnt_new;
+use rs_reconcile::target::fs::path2read::path2read_fn_new;
+use rs_reconcile::target::fs::path2read::PathToRead;
+use rs_reconcile::target::fs::read2count::read2cnt_fn_new;
+use rs_reconcile::target::fs::read2count::ReadToCount;
 
 use crate::source::KeyInfo;
 
-pub struct CntSrcDirect {
-    root: PathBuf,
+pub fn key2path_new(root: PathBuf) -> impl KeyToPath<Key = KeyInfo> {
+    key2path_fn_new(move |key: &KeyInfo| {
+        let dev = root.join(&key.uuid36);
+        let ymd = dev.join(&key.ymd10);
+        ymd.join("rows.jsonl")
+    })
 }
 
-#[tonic::async_trait]
-impl CountSource for CntSrcDirect {
-    type Key = KeyInfo;
+pub fn path2read_new() -> impl PathToRead<Read = tokio::fs::File> {
+    path2read_fn_new(tokio::fs::File::open)
+}
 
-    async fn get_count_by_key(&self, key: &Self::Key) -> Result<u64, Status> {
-        let dev = self.root.join(&key.uuid36);
-        let ymd = dev.join(&key.ymd10);
-        let rows = ymd.join("rows.jsonl");
-        let fil = tokio::fs::File::open(rows)
-            .await
-            .map_err(|e| Status::internal(format!("unable to open the rows file: {e}")))?;
-        let rdr = tokio::io::BufReader::new(fil);
+pub fn read2cnt_new() -> impl ReadToCount<Read = tokio::fs::File> {
+    read2cnt_fn_new(|rd: tokio::fs::File| async move {
+        let rdr = tokio::io::BufReader::new(rd);
         let lines = rdr.lines();
         let lstrm = LinesStream::new(lines);
-        let cnt: usize = lstrm.count().await;
-        Ok(cnt as u64)
-    }
+        Ok(lstrm.count().await as u64)
+    })
 }
 
 pub fn cnt_src_direct_new(root: PathBuf) -> impl CountSource<Key = KeyInfo> {
-    CntSrcDirect { root }
+    cnt_src_key2cnt_new(key2path_new(root), path2read_new(), read2cnt_new())
 }

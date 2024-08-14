@@ -9,6 +9,12 @@ unsafe-code = "forbid"
 [lints.clippy]
 unwrap-used = "forbid"
 
+[dependencies.tokio]
+version = "1.39.2"
+default-features = false
+features = [
+]
+
 [dependencies.tonic]
 version = "0.12"
 default-features = false
