@@ -26,6 +26,7 @@ where
     }
 }
 
+/// Creates [`CountSourceRaw`] from [`KeyToPath`] and [`PathToRaw`].
 pub fn key2raw_fs_new<K, P>(key2path: K, path2raw: P) -> impl CountSourceRaw<Key = K::Key>
 where
     K: KeyToPath,
