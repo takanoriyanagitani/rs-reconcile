@@ -25,6 +25,7 @@ where
     }
 }
 
+/// Creates [`KeyToPath`] from the function `key2path`.
 pub fn key2path_fn_new<F, K>(key2path: F) -> impl KeyToPath<Key = K>
 where
     F: Fn(&K) -> PathBuf + Sync + Send,
