@@ -30,6 +30,7 @@ where
     }
 }
 
+/// Creates a [`ReadToCount`] from the function `read2cnt`.
 pub fn read2cnt_fn_new<F, R, Fut>(read2cnt: F) -> impl ReadToCount<Read = R>
 where
     F: Fn(R) -> Fut + Send + Sync,
