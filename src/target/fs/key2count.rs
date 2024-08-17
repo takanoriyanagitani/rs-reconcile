@@ -30,6 +30,7 @@ where
     }
 }
 
+/// Creates a [`CountSource`] trait implementations.
 pub fn cnt_src_key2cnt_new<K, P, R>(
     key2path: K,
     path2read: P,
