@@ -40,6 +40,7 @@ where
     }
 }
 
+/// Creates a [`CompareCountSource`] from the [`CountSource`](source, target).
 pub fn compare_cnt_src_new<S, T>(src: S, tgt: T) -> impl CompareCountSource<Key = S::Key>
 where
     S: CountSource,
