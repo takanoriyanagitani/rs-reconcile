@@ -9,6 +9,7 @@ pub struct CompareCount<K> {
     pub count_tgt: u64,
 }
 
+/// The source of the [`CompareCount`].
 #[tonic::async_trait]
 pub trait CompareCountSource {
     type Key: Send + Sync + Clone;
