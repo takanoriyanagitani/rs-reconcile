@@ -14,6 +14,7 @@ pub struct CompareCount<K> {
 pub trait CompareCountSource {
     type Key: Send + Sync + Clone;
 
+    /// Tries to get the [`CompareCount`] by the key.
     async fn compare(&self, key: &Self::Key) -> Result<CompareCount<Self::Key>, Status>;
 }
 
