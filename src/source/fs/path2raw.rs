@@ -7,6 +7,7 @@ use std::path::PathBuf;
 
 use tonic::Status;
 
+/// Tries to get the content of the file specified by the [`Path`].
 #[tonic::async_trait]
 pub trait PathToRaw: Sync + Send {
     async fn path2raw<P>(&self, p: P) -> Result<Vec<u8>, std::io::Error>
