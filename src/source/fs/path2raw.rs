@@ -46,6 +46,7 @@ where
     }
 }
 
+/// Creates a [`PathToRaw`] from the function `path2raw`.
 pub fn path2raw_new_fn<F, Fut>(path2raw: F) -> impl PathToRaw
 where
     F: Fn(PathBuf) -> Fut + Sync + Send,
