@@ -10,6 +10,7 @@ use tokio::io::AsyncRead;
 
 use tonic::Status;
 
+/// Tries to get a readable(e.g, a file) from the [`Path`].
 #[tonic::async_trait]
 pub trait PathToRead: Sync + Send {
     type Read: AsyncRead + Sync + Send + Unpin;
