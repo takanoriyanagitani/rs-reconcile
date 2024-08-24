@@ -54,6 +54,7 @@ where
     }
 }
 
+/// Creates a [`PathToRead`] from the function `path2read`.
 pub fn path2read_fn_new<F, R, Fut>(path2read: F) -> impl PathToRead<Read = R>
 where
     F: Fn(PathBuf) -> Fut + Sync + Send,
