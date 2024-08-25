@@ -1,3 +1,5 @@
+//! Traits, functions to get count info.
+
 use tonic::Status;
 
 /// Tries to get the count info by the key.
