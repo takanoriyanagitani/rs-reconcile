@@ -1,3 +1,5 @@
+//! Modules, functions for comparing the count values.
+
 use tonic::Status;
 
 use crate::count::CountSource;
