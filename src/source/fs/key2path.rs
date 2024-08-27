@@ -2,6 +2,7 @@ use core::marker::PhantomData;
 
 use std::path::PathBuf;
 
+/// Gets the path from the key.
 pub trait KeyToPath: Sync + Send {
     type Key: Send + Sync + Clone;
 
