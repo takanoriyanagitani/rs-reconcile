@@ -1,3 +1,5 @@
+//! Traits, functions to get the path from the key.
+
 use core::marker::PhantomData;
 
 use std::path::PathBuf;
