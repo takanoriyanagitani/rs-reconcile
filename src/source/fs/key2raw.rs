@@ -1,3 +1,5 @@
+//! Functions to create [`CountSourceRaw`].
+
 use std::path::PathBuf;
 
 use tonic::Status;
