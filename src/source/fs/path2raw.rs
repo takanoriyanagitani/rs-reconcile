@@ -1,3 +1,5 @@
+//! Traits, functions to get raw data bytes from the path.
+
 use core::future::Future;
 
 use std::io::ErrorKind;
