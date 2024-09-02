@@ -1,3 +1,5 @@
+//! Functions to create [`CountSource`].
+
 use std::path::PathBuf;
 
 use tonic::Status;
