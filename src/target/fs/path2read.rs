@@ -1,3 +1,5 @@
+//! Traits/functions to convert the [`Path`] to the readable.
+
 use core::future::Future;
 use core::marker::PhantomData;
 
