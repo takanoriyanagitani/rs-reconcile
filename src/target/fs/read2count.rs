@@ -5,6 +5,7 @@ use tokio::io::AsyncRead;
 
 use tonic::Status;
 
+/// Gets the count info from the readable.
 #[tonic::async_trait]
 pub trait ReadToCount: Sync + Send {
     type Read: AsyncRead + Sync + Send + Unpin;
