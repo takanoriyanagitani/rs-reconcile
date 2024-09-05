@@ -1,3 +1,5 @@
+//! Traits/functions to get the count from the readable.
+
 use core::future::Future;
 use core::marker::PhantomData;
 
