@@ -18,8 +18,9 @@ pub trait CountSourceRaw: Send + Sync {
     async fn get_count_by_key(&self, key: &Self::Key) -> Result<Vec<u8>, Status>;
 }
 
-/// Tries to parse the raw count info to get the count info.
+/// Gets the count info from the raw bytes.
 pub trait CountRawParser: Send + Sync {
+    /// Tries to parse the raw count bytes to get the count info.
     fn parse(&self, count_raw: &[u8]) -> Result<u64, Status>;
 }
 
